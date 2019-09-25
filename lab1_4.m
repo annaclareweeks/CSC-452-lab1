@@ -1,10 +1,15 @@
-np=1e7; nd=10; nl = 7;
+np=1e5; nd=10; nl = 8;
+
+hp = gcp('nocreate');
+if isempty(hp), hp=parpool(nl); end
+
 tic;
 spmd
-    A = randn(np/nl,nd); B = randn((np/nl),nd);
-    d = zeros(np/nl,1);
+    nppl = round(np/nl);
+    A = randn(nppl,nd); B = randn((nppl),nd);
+    d = zeros(nppl,1);
 
-    for i = 1:np/nl
+    for i = 1:nppl
         for j = 1:nd
             d(i) = d(i) + (B(i,j) - A(i,j)).^2;
         end

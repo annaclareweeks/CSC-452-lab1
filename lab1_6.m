@@ -1,4 +1,8 @@
-np=1e6; nd=2; nl=8;
+np=1e5; nd=10; nl=4;
+
+hp = gcp('nocreate');
+if isempty(hp), hp=parpool(nl); end
+
 d=zeros(np,1);
 tic;
 spmd
@@ -11,7 +15,7 @@ spmd
         D = C.^2;
         labSend(D,3);
     elseif(labindex==3)
-        D = labRecieve(2);
+        D = labReceive(2);
         E = sum(D,2);
         labSend(E,4);
     elseif(labindex==4)
